@@ -2,18 +2,32 @@ import requests
 
 base_url = "https://pokeapi.co/api/v2/"
 
+def api_errors(fonk):
+    def wrapper(*args,**kwargs):
+        try:
+            return fonk(*args,**kwargs)
+        except requests.exceptions.HTTPError:
+            name = args[0] if args else "Unknown"
+            print(f"❌ Pokémon '{name}' not found")
+        except requests.exceptions.RequestException as err:
+            print(f"❌ Request failed: {err}")
+        return None
+    return wrapper
+
+def no_data(fonk):
+    def wrapper(pokemon,*args,**kwargs):
+        if not pokemon:
+            print("No pokemon found to display.")
+            return
+        return fonk(*args,**kwargs)
+    return wrapper
+
+@api_errors
 def get_pokemon_info(name):
     url = f"{base_url}pokemon/{name}"
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        return response.json()
-    except requests.exceptions.HTTPError as err:
-        print(f"❌ Pokémon '{name}' not found.")
-        return None
-    except requests.exceptions.RequestException as err:
-        print(f"❌ Request failed: {err}")
-        return None
+    response = requests.get(url)
+    response.raise_for_status()
+    return response.json()
 
 def convert_height(height_dm):
     return height_dm * 10  # decimetre → cm
@@ -21,6 +35,7 @@ def convert_height(height_dm):
 def convert_weight(weight_hg):
     return weight_hg * 0.1  # hectogram → kg
 
+@no_data
 def display_pokemon_info(pokemon):
     print(f"\n=== {pokemon['name'].capitalize()} (ID: {pokemon['id']}) ===")
     print(f"Height: {convert_height(pokemon['height'])} cm")
