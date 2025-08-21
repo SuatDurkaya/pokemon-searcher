@@ -1,2 +1,10 @@
-# pokemon-searcher
-A Python script that fetches detailed Pokémon info from PokeAPI. Displays ID, height (cm), weight (kg), types, abilities, and base stats. Includes error handling and clean Python code, demonstrating API usage and data processing—perfect for showcasing in a portfolio.
+🐱‍👤 Pokémon Searcher
+
+This Python script fetches detailed information about a Pokémon using the PokeAPI based on the name provided by the user. 
+
+Features:
+- Displays Pokémon's ID, height (cm), and weight (kg)
+- Lists types and abilities
+- Shows base stats (HP, Attack, Defense, etc.)
+
+Includes proper error handling and demonstrates API usage, data processing, and clean Python coding practices—perfect as a portfolio project.
